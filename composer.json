@@ -1,6 +1,8 @@
 {
     "name": "impactaweb/laravel-breadcrumb",
     "description": "Simple Laravel Breadcrumb",
+    "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Gustavo Sagrillo",
@@ -8,5 +10,11 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "autoload": {
+        "psr-4": {
+            "Impactaweb\\Breadcrumb\\": "src/"
+        }
+    },
+    "require": {
+    }
 }
