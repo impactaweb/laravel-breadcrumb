@@ -1,0 +1,12 @@
+{
+    "name": "impactaweb/laravel-breadcrumb",
+    "description": "Simple Laravel Breadcrumb",
+    "authors": [
+        {
+            "name": "Gustavo Sagrillo",
+            "email": "gustavo@impactaweb.com.br"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

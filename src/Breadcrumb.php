@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Resources;
+namespace Impactaweb\Breadcrumb;
 
 use View;
 
@@ -12,18 +12,6 @@ class Breadcrumb {
     /**
      * Starts breadcrumb and find in the request hierarchy
      * if there is implemented route to add it automatically.
-     * 
-     * How to implement a automatic route:
-     * - Create a function with the route name. Example:
-     * 
-     * Route: admin.users
-     * You call: Breadcrumb::push("Users", "users");
-     * Function to add "Admin" to breadcrumb automatically:
-     * 
-     * public function admin($parameters)
-     * {
-     *      $this->add("Admin", "/admin", false);
-     * }
      */
     public function __construct()
     {
