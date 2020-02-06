@@ -15,7 +15,7 @@ Simple Laravel Breadcrumb
 (...)
 ```
 
-2. Run `composer install impactaweb/laravel-breadcrumb`
+2. Run `composer require impactaweb/laravel-breadcrumb`
 
 3. Add `Impactaweb\Breadcrumb\ServiceProvider::class` to your providers list on `/config/app.php`.
 
