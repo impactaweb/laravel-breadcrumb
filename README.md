@@ -3,21 +3,19 @@ Simple Laravel Breadcrumb
 
 ## Installation
 
-1. `composer.json` file:
+1. Set breadcrumb repository from github.com (file `composer.json`):
 ```json
-(...)
 "repositories": [
     {
         "type": "vcs",
         "url": "git@github.com:impactaweb/laravel-breadcrumb.git"
     }
 ]
-(...)
 ```
 
 2. Run `composer require impactaweb/laravel-breadcrumb`
 
-3. Add `Impactaweb\Breadcrumb\ServiceProvider::class` to your providers list on `/config/app.php`.
+3. Add `Impactaweb\Breadcrumb\ServiceProvider::class` to your provider list on `/config/app.php`.
 
 ## Usage
 
@@ -31,8 +29,12 @@ Breadcrumb::pushList([
         ["Users", "/admin/users", false]
     ]);
 ```
+Add `$breadcrumb` in your view:
+```php
+{!! $breadcrumb !!}
+```
 
-## Customized template
+## Custom breadcrumb template
 
 Create a /config/breadcrumb.php file with the following code:
 
@@ -44,21 +46,19 @@ return [
 ]
 ```
 
-The variable `$items` will have "title" and "url" list:
+The variable `$items` will have `"title"` and `"url"` list:
 ```
 @foreach ($items as $item)
     <a href="{{ $item['url'] }}">{{ $item['title'] }}</a>
 @endforeach
 ```
 
-## Automatic breadcrumb from Laravel request hierarchy
+## Extended
 
-Create a function with the route name. 
+### Automatic breadcrumb from Laravel request (when inside groups)
+
+Create a function with the group name. 
 For example, the route `admin.something.users` (`/admin/something/users`) could be implemented like this:
-
-### Extended class
-
-Function to add "Admin" and "Something" to breadcrumb automatically:
 
 ```php
 use Impactaweb\Breadcrumb\Breadcrumb;
@@ -82,10 +82,7 @@ class MyBreadcrumb extends Breadcrumb {
     }
 
 }
-```
 
-### Breadcrumb call:
-
-```php
+// Call:
 MyBreadcrumb::push("Users", "users");
 ```
