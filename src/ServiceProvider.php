@@ -23,6 +23,11 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function boot()
     {
+        // Default configs
+        // It can be replaced by the user in laravel /config/breadcrumb.php file
+        $this->mergeConfigFrom(__DIR__.'/config/breadcrumb.php', 'breadcrumb');
+
+        // Breadcrumb
         $this->loadViewsFrom(__DIR__.'/resources/views', 'breadcrumb');
     }
 }

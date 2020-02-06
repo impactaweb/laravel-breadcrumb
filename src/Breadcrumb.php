@@ -19,6 +19,10 @@ class Breadcrumb {
         $action = $route->getAction();
         $this->parameters = $route->parameters();
 
+        if (!isset($action['name'])) {
+            $action['name'] = [];
+        }
+
         // The $action['name'], when there is only one, come as string.
         foreach ((array)$action['name'] as $name) {
             $name = trim($name,'.');
@@ -44,20 +48,19 @@ class Breadcrumb {
      */
     public static function push(string $title, string $url = "", bool $isRoute = true)
     {
-        $breadcrumb = new Breadcrumb();
-        $breadcrumb->add($title, $url, $isRoute);
-        $breadcrumb->render();
+        return self::pushArray([[$title, $url, $isRoute]]);
     }
 
     /**
      * Static function to create a breadcrumb with multiple items
      */
-    public static function pushArray(array $pushList, bool $isRoute = true)
+    public static function pushArray(array $pushList)
     {
         $breadcrumb = new Breadcrumb();
         foreach ($pushList as $item) {
             $title = $item[0];
             $url = $item[1] ?? "";
+            $isRoute = $item[2] ?? true;
             $breadcrumb->add($title, $url, $isRoute);
         }
         $breadcrumb->render();
@@ -68,24 +71,9 @@ class Breadcrumb {
      */
     public function render()
     {
-        $html = '<nav aria-label="breadcrumb"><ol class="breadcrumb">';
-        $count = count($this->items);
-        foreach ($this->items as $i => $item) {
-            $html .= '<li class="breadcrumb-item';
-            if ($i === ($count - 1)) {
-                $html .= ' active';
-            }
-            $html .= '">';
-            if (empty($item['url'])) {
-                $html .= $item['title'];
-            } else {
-                $html .= '<a href="'.$item['url'].'">'.$item['title'].'</a>';
-            }
-            $html .= "</li>";
-        }
-        $html .= "</ol></nav>";
-
-        View::share('breadcrumb', $html);
+        View::share('breadcrumb', 
+            view(config('breadcrumb.view'), ['items' => $this->items])->render()
+        );
     }
 
 }
