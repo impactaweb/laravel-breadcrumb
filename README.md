@@ -23,7 +23,7 @@ Simple Laravel Breadcrumb
 <?php
 Breadcrumb::push("Admin", "admin.index");
 Breadcrumb::push("Users", "/admin/users", false);
-Breadcrumb::pushList([
+Breadcrumb::pushArray([
         // same as ["Title", route('route.name'), false]:
         ["Title", "route.name"], 
         ["Users", "/admin/users", false]
