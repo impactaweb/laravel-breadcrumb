@@ -2,12 +2,11 @@
 
 namespace Impactaweb\Breadcrumb;
 
-use View;
-
 class Breadcrumb {
 
     public $items = [];
     public $parameters;
+    private static $instance;
 
     /**
      * Starts breadcrumb and find in the request hierarchy
@@ -33,9 +32,26 @@ class Breadcrumb {
     }
 
     /**
-     * Adds item to breadcrumb list
+     * Get singleton instance
+     *
+     * @return void
      */
-    public function add($title, $url, bool $isRoute = true)
+    public static function getInstance()
+    {
+        return !isset(self::$instance) 
+            ? self::$instance = new self 
+            : self::$instance;
+    }
+
+    /**
+     * Adds item to breadcrumb list
+     *
+     * @param string $title
+     * @param string|null $url
+     * @param boolean $isRoute
+     * @return void
+     */
+    public function add(string $title, ?string $url, bool $isRoute = true)
     {
         if ($isRoute && !empty($url)) {
             $url = strtok(route($url, $this->parameters), '?');
@@ -44,7 +60,28 @@ class Breadcrumb {
     }
 
     /**
+     * Render the breadcrumb and returns it's html
+     *
+     * @return string
+     */
+    public function render(): string
+    {
+        if (empty($this->items)) {
+            return "";
+        }
+
+        return view(config('breadcrumb.view'), [
+            'items' => $this->items
+        ])->render();
+    }
+
+    /**
      * Static function to create a single breadcrumb
+     *
+     * @param string $title
+     * @param string $url
+     * @param boolean $isRoute
+     * @return void
      */
     public static function push(string $title, string $url = "", bool $isRoute = true)
     {
@@ -53,27 +90,28 @@ class Breadcrumb {
 
     /**
      * Static function to create a breadcrumb with multiple items
+     *
+     * @param array $pushList
+     * @return void
      */
     public static function pushArray(array $pushList)
     {
-        $breadcrumb = new Breadcrumb();
         foreach ($pushList as $item) {
             $title = $item[0];
             $url = $item[1] ?? "";
             $isRoute = $item[2] ?? true;
-            $breadcrumb->add($title, $url, $isRoute);
+            self::getInstance()->add($title, $url, $isRoute);
         }
-        $breadcrumb->render();
     }
 
     /**
-     * Render the breadcrumb and sent it to Blade (View::share)
+     * Retorna o html do breadcrumb renderizado
+     *
+     * @return void
      */
-    public function render()
+    public static function getHtml()
     {
-        View::share('breadcrumb', 
-            view(config('breadcrumb.view'), ['items' => $this->items])->render()
-        );
+        return self::getInstance()->render();
     }
 
 }
