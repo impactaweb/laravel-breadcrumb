@@ -29,9 +29,16 @@ Breadcrumb::pushArray([
         ["Users", "/admin/users", false]
     ]);
 ```
-Add `$breadcrumb` in your view:
+Add Breadcrumb to your alias list (`config/app.php`):
 ```php
-{!! $breadcrumb !!}
+// (...)
+'Breadcrumb' => Impactaweb\Breadcrumb\Breadcrumb::class,
+// (...)
+```
+
+Call `Breadcrumb` in your view:
+```php
+{!! Breadcrumb::getHtml() !!}
 ```
 
 ## Custom breadcrumb template
