@@ -38,8 +38,8 @@ class Breadcrumb {
      */
     public static function getInstance()
     {
-        return !isset(self::$instance) 
-            ? self::$instance = new self 
+        return !isset(self::$instance)
+            ? self::$instance = new self
             : self::$instance;
     }
 
@@ -54,7 +54,12 @@ class Breadcrumb {
     public function add(string $title, ?string $url, bool $isRoute = true)
     {
         if ($isRoute && !empty($url)) {
-            $url = strtok(route($url, $this->parameters), '?');
+            try {
+                $route = route($url, $this->parameters, false);
+            } catch (\Exception $e) {
+                $route = '#';
+            }
+            $url = strtok($route, '?');
         }
         $this->items[] = compact('title', 'url');
     }
