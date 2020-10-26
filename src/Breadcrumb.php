@@ -2,7 +2,8 @@
 
 namespace Impactaweb\Breadcrumb;
 
-class Breadcrumb {
+class Breadcrumb
+{
 
     public $items = [];
     public $parameters;
@@ -24,7 +25,7 @@ class Breadcrumb {
 
         // The $action['name'], when there is only one, come as string.
         foreach ((array)$action['name'] as $name) {
-            $name = trim($name,'.');
+            $name = trim($name, '.');
             if (method_exists($this, $name)) {
                 $this->$name($this->parameters);
             }
@@ -54,11 +55,7 @@ class Breadcrumb {
     public function add(string $title, ?string $url, bool $isRoute = true)
     {
         if ($isRoute && !empty($url)) {
-            try {
-                $route = route($url, $this->parameters, false);
-            } catch (\Exception $e) {
-                $route = '#';
-            }
+            $route = route($url, request()->route()->parameters(), false);
             $url = strtok($route, '?');
         }
         $this->items[] = compact('title', 'url');
